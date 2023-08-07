@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import * as S from './ImageGalleryItem.styled';
+import PropTypes from 'prop-types';
+
+import { Item, Image } from './ImageGalleryItem.styled';
 import { Modal } from 'components/Modal';
 
 class ImageGalleryItem extends Component {
@@ -17,8 +19,8 @@ class ImageGalleryItem extends Component {
     const { imgUrl, description, largeImgUrl } = this.props;
     const { showModal } = this.state;
     return (
-      <S.Item>
-        <S.Image src={imgUrl} alt={description} onClick={this.toggleModal} />
+      <Item>
+        <Image src={imgUrl} alt={description} onClick={this.toggleModal} />
         {showModal && (
           <Modal
             src={largeImgUrl}
@@ -26,8 +28,20 @@ class ImageGalleryItem extends Component {
             onClose={this.toggleModal}
           />
         )}
-      </S.Item>
+      </Item>
     );
   }
 }
+
+ImageGalleryItem.propTypes = {
+  imgUrl: PropTypes.string,
+  description: PropTypes.string,
+  largeImgUrl: PropTypes.string,
+  showModal: PropTypes.bool,
+  onClick: PropTypes.func,
+  src: PropTypes.string,
+  alt: PropTypes.string,
+  onClose: PropTypes.func,
+};
+
 export { ImageGalleryItem };

@@ -1,8 +1,20 @@
 import React from 'react';
-import { ButtonStyled } from './Button.styled';
+import PropTypes from 'prop-types';
 
-const Button = () => {
-  return <ButtonStyled type="button">Load more</ButtonStyled>;
+import { Thumb, ButtonStyled } from './Button.styled';
+
+const Button = ({ onClick }) => {
+  return (
+    <Thumb>
+      <ButtonStyled type="button" onClick={onClick}>
+        Load more
+      </ButtonStyled>
+    </Thumb>
+  );
+};
+
+Button.propTypes = {
+  onClick: PropTypes.func,
 };
 
 export { Button };

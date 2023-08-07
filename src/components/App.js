@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Notify } from 'notiflix';
 
 import { GlobalStyle } from './GlobalStyle';
 import { SearchBar } from './Searchbar';
@@ -6,10 +8,8 @@ import { AppContainer } from './App.styled';
 import { ImageCallery } from './ImageGallery';
 import { Loader } from './Loader';
 import { Button } from './Button';
-
 import { Layout } from './Layout';
 import { getImages } from 'services/APIs';
-import { Notify } from 'notiflix';
 
 class App extends Component {
   state = {
@@ -33,14 +33,11 @@ class App extends Component {
   async fetchImages() {
     const { query, page } = this.state;
     const options = { query, page };
-    console.log(options.query);
 
     try {
       this.setState({ isLoading: true });
 
       const { hits, totalHits } = await getImages(options);
-      console.log(totalHits);
-      console.log(hits);
 
       const nextImages = hits.map(
         ({ id, webformatURL, tags, largeImageURL }) => ({
@@ -69,19 +66,10 @@ class App extends Component {
         totalImages: totalHits,
       });
     } catch (error) {
-      console.log(error);
+      this.setState({ error });
+      Notify.failure(error.message);
     } finally {
       this.setState({ isLoading: false });
-    }
-  }
-
-  checkLastPage({ page, totalImages }) {
-    const { query } = this.state;
-    const lastPage = Math.ceil(totalImages / 12);
-
-    if (page === lastPage) {
-      Notify.success(`You have got all images for request ${query}`);
-      return;
     }
   }
 
@@ -90,12 +78,22 @@ class App extends Component {
       images: [],
       query: value,
       page: 1,
+      totalImages: 0,
     });
   };
 
-  handleClick = e => {
-    console.log(e.target.value);
+  handleLoadMore = () => {
+    this.setState(prev => ({ page: prev.page + 1 }));
   };
+
+  checkLastPage({ page, totalImages }) {
+    const { query } = this.state;
+    const lastPage = Math.ceil(totalImages / 12);
+
+    if (page === lastPage) {
+      Notify.success(`You have got all images for request ${query}`);
+    }
+  }
 
   render() {
     const { images, totalImages, isLoading } = this.state;
@@ -110,17 +108,24 @@ class App extends Component {
 
           <SearchBar onSubmit={this.handleSubmit} />
 
+          <ImageCallery images={images} />
+
+          {loadMoreVisible && <Button onClick={this.handleLoadMore} />}
+
           {isLoading && <Loader />}
-
-          {images.length > 0 && images.length < totalImages && (
-            <ImageCallery images={images} />
-          )}
-
-          {loadMoreVisible && <Button onClick={this.handleClick} />}
         </AppContainer>
       </Layout>
     );
   }
 }
+
+App.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.object),
+  query: PropTypes.string,
+  page: PropTypes.number,
+  error: PropTypes.string,
+  isLoading: PropTypes.bool,
+  totalImages: PropTypes.number,
+};
 
 export { App };

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { ImSearch } from 'react-icons/im';
 
 const Bar = styled.header`
   top: 0;

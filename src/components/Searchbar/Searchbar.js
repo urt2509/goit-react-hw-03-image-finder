@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Notify } from 'notiflix';
-import * as S from './Searchbar.styled';
+import PropTypes from 'prop-types';
+
+import { Bar, Form, Button, Input } from './Searchbar.styled';
 
 import { ImSearch } from 'react-icons/im';
 
@@ -32,24 +34,28 @@ class SearchBar extends Component {
     const { searchImage } = this.state;
 
     return (
-      <S.Bar>
-        <S.Form onSubmit={this.handleSubmit}>
-          <S.Button type="submit">
+      <Bar>
+        <Form onSubmit={this.handleSubmit}>
+          <Button type="submit">
             <ImSearch />
-          </S.Button>
+          </Button>
 
-          <S.Input
+          <Input
             type="text"
             value={searchImage}
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
             onChange={this.handleChange}
-          ></S.Input>
-        </S.Form>
-      </S.Bar>
+          ></Input>
+        </Form>
+      </Bar>
     );
   }
 }
+
+SearchBar.propTypes = {
+  searchImage: PropTypes.string,
+};
 
 export { SearchBar };

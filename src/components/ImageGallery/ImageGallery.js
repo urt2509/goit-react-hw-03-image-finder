@@ -1,10 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { ImageGalleryItem } from '../ImageGalleryItem';
-import * as S from './ImageGallery.styled';
+import { ImageList } from './ImageGallery.styled';
 
 const ImageCallery = ({ images }) => {
   return (
-    <S.ImageList>
+    <ImageList>
       {images.map(({ id, webformatURL, tags, largeImageURL }) => (
         <ImageGalleryItem
           key={id}
@@ -13,8 +15,21 @@ const ImageCallery = ({ images }) => {
           largeImgUrl={largeImageURL}
         />
       ))}
-    </S.ImageList>
+    </ImageList>
   );
+};
+
+ImageCallery.propTypes = {
+  images: PropTypes.shape({
+    id: PropTypes.string,
+    webformatURL: PropTypes.string,
+    tags: PropTypes.string,
+    largeImageURL: PropTypes.string,
+  }),
+  key: PropTypes.string,
+  imgUrl: PropTypes.string,
+  description: PropTypes.string,
+  largeImgUrl: PropTypes.string,
 };
 
 export { ImageCallery };
