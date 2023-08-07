@@ -1,1 +1,1 @@
-export { SearchBar } from './Searchbar.jsx';
+export { SearchBar } from './Searchbar';

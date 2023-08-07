@@ -1,1 +1,1 @@
-export { ImageGalleryItem } from './ImageGalleryItem.jsx';
+export { ImageGalleryItem } from './ImageGalleryItem.js';
